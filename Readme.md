@@ -28,24 +28,6 @@
 
 </div>
 
-## 🧭 Table of Contents
-
-- [Overview](#-overview)
-- [Project Objectives](#-project-objectives)
-- [Business Metrics & KPIs](#-business-metrics--kpis)
-- [Analytical Components](#-analytical-components)
-- [Database Design](#️-database-design)
-- [Data Processing Architecture](#️-data-processing-architecture)
-- [Project Structure](#-project-structure)
-- [Technologies](#-technologies-used)
-- [Data Flow Example](#-data-flow-example)
-- [Example KPI Output](#-example-kpi-output)
-- [Running the Tests](#-running-the-tests)
-- [Roadmap](#-roadmap--future-improvements)
-- [Author](#-author)
-
----
-
 ## 🔍 Overview
 
 The **Financial Analytics Dashboard** is a data engineering and analytics project designed to replicate the internal data workflows found in real corporate environments.
