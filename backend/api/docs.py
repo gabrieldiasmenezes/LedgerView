@@ -13,6 +13,11 @@ api_metadata = {
 tags_metadata = [
 
     {
+        "name": "Filters",
+        "description": "Endpoint that returns available filter values"
+    },
+
+    {
         "name": "Metrics",
         "description": "Key performance indicators such as revenue, profit and margin."
     },

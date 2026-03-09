@@ -196,7 +196,6 @@ CROSS JOIN categories;
 --==================================================
 -- VERIFICATION QUERIES
 --==================================================
-
 -- Clients with region
 SELECT
 c.id,
@@ -205,7 +204,7 @@ r.name AS region
 FROM clients c
 JOIN regions r ON c.region_id = r.id;
 
-
+SELECT DISTINCT year FROM sales;
 -- Sales overview
 SELECT
 s.id,

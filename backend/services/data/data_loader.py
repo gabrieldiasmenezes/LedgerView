@@ -3,7 +3,6 @@ from connection.database import get_db_connection
 from .clean_data import clean_sales_data, clean_targets_data
 
 
-
 def fetch_sales_data(year:int = None ,region:str = None):
     """
         Searches for sales data and loads it into a Pandas DataFrame.
@@ -57,7 +56,7 @@ def fetch_sales_data(year:int = None ,region:str = None):
         return df
     except Exception as e:
         print(f"Error fetching sales data: {e}")
-        return pd.DataFrame()  # Return an empty DataFrame on error
+        return {"error": str(e)}  # Return an empty DataFrame on error
 
 
 def fetch_target_data(year: int):
@@ -65,8 +64,7 @@ def fetch_target_data(year: int):
     Fetches target values for the specified year from the database.
     """
     try:
-        conn = get_db_connection()
-
+        conn=get_db_connection()
         query = """
         SELECT metric, target_value
         FROM targets
@@ -85,5 +83,22 @@ def fetch_target_data(year: int):
 
     except Exception as e:
         print(f"Error fetching target data: {e}")
-        return {}
+        return {"error": str(e)}
 
+def fetch_filters():
+    try:
+        conn=get_db_connection()
+        query_region="SELECT name FROM regions"
+        query_years="SELECT DISTINCT year FROM sales;"
+        regions=pd.read_sql_query(query_region,conn)["name"].tolist()
+        years=pd.read_sql_query(query_years,conn)["year"].tolist()
+        conn.close()
+
+
+        return {
+            "region":["All Regions"] + regions,
+            "year":years
+        }
+    except Exception as e:
+        print(f"Error fetching regions data: {e}")
+        return {"error": str(e)}

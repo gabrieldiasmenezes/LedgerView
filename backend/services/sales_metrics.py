@@ -72,7 +72,8 @@ def get_sales_metrics(year: int, region: str = None):
                 "total_revenue": 0,
                 "net_profit": 0,
                 "margin": 0,
-                "average_ticket": 0
+                "average_ticket": 0,
+                "monthly_growth":0
             }
         else:
             metrics_previous = calculate_metrics(df_previous)
@@ -104,11 +105,17 @@ def get_sales_metrics(year: int, region: str = None):
                     metrics_current["average_ticket"],
                     metrics_previous["average_ticket"]
                 )
+            },
+            "monthly_growth": {
+                "value": metrics_current["monthly_growth"],
+                "growth": 0 if not has_previous_data else calculate_percentage_change(
+                    metrics_current["monthly_growth"],
+                    metrics_previous["monthly_growth"]
+                )
             }
         }
 
         return sales_metrics
 
     except Exception as e:
-        print(f"Error getting sales metrics: {e}")
-        return {}
+        return {"Error getting sales metrics:": e}
