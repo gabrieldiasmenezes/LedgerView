@@ -1,0 +1,15 @@
+# Node modules
+node_modules/
+
+# Next.js build
+.next/
+out/
+dist/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Env
+.env
