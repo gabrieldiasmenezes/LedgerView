@@ -88,7 +88,7 @@ INSERT INTO targets (year, metric, target_value) VALUES
 
 
 --==================================================
--- GENERATE SALES DATA
+-- GENERATE SALES DATA (ADVANCED REALISTIC)
 --==================================================
 
 WITH RECURSIVE months(m) AS (
@@ -128,19 +128,99 @@ y,
 m,
 r,
 
-((m + r) % 8) + 1, -- business_unit
+((m + r) % 8) + 1,
+((m + r + y) % 10) + 1,
+((m + r + y) % 8) + 1,
+((m + r) % 6) + 1,
 
-((m + r + y) % 10) + 1, -- client
+--==================================================
+-- REVENUE
+--==================================================
 
-((m + r + y) % 8) + 1, -- product
+(
 
-((m + r) % 6) + 1, -- cost_category
+-- base revenue
+40000
 
--- revenue
-10000 + (m * 2000) + (r * 1500) + ((y - 2023) * 5000),
+-- crescimento anual forte
++ ((y - 2023) * 15000)
 
--- cost
-7000 + (m * 1200) + (r * 900) + ((y - 2023) * 3500)
+-- diferença regional
++ CASE
+    WHEN r = 1 THEN 120000   -- North America
+    WHEN r = 2 THEN 70000    -- Europe
+    WHEN r = 3 THEN 45000    -- Asia
+    ELSE 20000               -- South America
+  END
+
+-- sazonalidade forte
++ CASE
+    WHEN m IN (11,12) THEN 60000
+    WHEN m IN (9,10) THEN 30000
+    WHEN m IN (6,7) THEN 20000
+    WHEN m IN (1,2) THEN -10000
+    ELSE 0
+  END
+
+-- peso por produto (alguns dominam)
++ CASE ((m + r + y) % 8) + 1
+    WHEN 1 THEN 35000
+    WHEN 2 THEN 42000
+    WHEN 3 THEN 12000
+    WHEN 4 THEN 25000
+    WHEN 5 THEN 18000
+    WHEN 6 THEN 20000
+    WHEN 7 THEN 38000
+    WHEN 8 THEN 45000
+  END
+
+-- variação realista
++ ABS(random() % 20000)
+
+),
+
+--==================================================
+-- COST
+--==================================================
+
+(
+
+28000
+
+-- crescimento anual
++ ((y - 2023) * 9000)
+
+-- custo por região
++ CASE
+    WHEN r = 1 THEN 70000
+    WHEN r = 2 THEN 42000
+    WHEN r = 3 THEN 30000
+    ELSE 15000
+  END
+
+-- sazonalidade
++ CASE
+    WHEN m IN (11,12) THEN 20000
+    WHEN m IN (6,7) THEN 12000
+    ELSE 0
+  END
+
+-- crise econômica (2024 início)
++ CASE
+    WHEN y = 2024 AND m IN (1,2,3) THEN 25000
+    ELSE 0
+  END
+
+-- investimento pesado em 2025
++ CASE
+    WHEN y = 2025 AND m IN (5,6,7) THEN 35000
+    ELSE 0
+  END
+
+-- variação realista
++ ABS(random() % 18000)
+
+)
 
 FROM years
 CROSS JOIN months
@@ -148,7 +228,7 @@ CROSS JOIN regions_list;
 
 
 --==================================================
--- GENERATE EXPENSE DATA
+-- GENERATE EXPENSE DATA (ADVANCED)
 --==================================================
 
 WITH RECURSIVE months(m) AS (
@@ -185,8 +265,33 @@ y,
 m,
 c,
 
--- valor base de despesa
-5000 + (m * 800) + (c * 1500) + ((y - 2023) * 2000)
+(
+
+15000
+
+-- crescimento anual
++ ((y - 2023) * 4000)
+
+-- sazonalidade marketing
++ CASE
+    WHEN c = 3 AND m IN (10,11,12) THEN 25000
+    ELSE 0
+  END
+
+-- pesos por categoria
++ CASE
+    WHEN c = 1 THEN 60000
+    WHEN c = 2 THEN 35000
+    WHEN c = 3 THEN 28000
+    WHEN c = 4 THEN 22000
+    WHEN c = 5 THEN 16000
+    ELSE 9000
+  END
+
+-- variação
++ ABS(random() % 10000)
+
+)
 
 FROM years
 CROSS JOIN months

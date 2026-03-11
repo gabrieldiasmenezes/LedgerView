@@ -233,7 +233,228 @@ financial-analytics-dashboard/
 
 ---
 
-## 🛠️ Technologies Used
+## ⚡ Getting Started
+
+### 🧰 Environment Setup
+
+Before running the project, ensure the following tools are installed:
+
+| Tool | Version |
+|---|---|
+| Python | 3.10+ |
+| Node.js | 18+ |
+| npm / pnpm | Latest |
+| Git | Latest |
+
+---
+
+### 📦 Clone the Repository
+
+```bash
+git clone https://github.com/yourusername/financial-analytics-dashboard.git
+cd financial-analytics-dashboard
+```
+
+---
+
+### �️ Database Setup
+
+**Option 1 — Using SQLite CLI**
+
+If you have SQLite installed, run:
+
+```bash
+sqlite3 database/ledgerview.db
+```
+
+Then execute:
+
+```sql
+.read database/create_tables.sql
+.read database/seed_data.sql
+```
+
+This will:
+- Create the database schema
+- Populate the tables with simulated financial data
+
+**Option 2 — Using Python (Recommended)**
+
+If SQLite CLI is not installed, you can create the database directly using Python. Run the following script from the project root:
+
+```bash
+python database/init_db.py
+```
+
+Example implementation (`database/init_db.py`):
+
+```python
+import sqlite3
+from pathlib import Path
+
+db_path = Path("database/ledgerview.db")
+
+conn = sqlite3.connect(db_path)
+cursor = conn.cursor()
+
+with open("database/create_tables.sql") as f:
+    cursor.executescript(f.read())
+
+with open("database/seed_data.sql") as f:
+    cursor.executescript(f.read())
+
+conn.commit()
+conn.close()
+
+print("Database initialized successfully.")
+```
+
+This script will:
+- Create the SQLite database
+- Execute the schema script
+- Populate the tables with sample data
+
+---
+
+### 🔑 Environment Variables
+
+This project uses environment variables to configure both the backend API and the frontend application. The variables are stored in separate `.env` files inside the `backend` and `frontend` folders.
+
+**Backend — `backend/.env`**
+
+Create a file named `.env` inside the `backend` folder and add:
+
+```env
+API_KEY=ledger_secure_key_2026
+```
+
+This key is used by the FastAPI backend to protect API endpoints and validate incoming requests from the frontend.
+
+**Frontend — `frontend/.env.local`**
+
+Create a file named `.env` inside the `frontend` folder and add:
+
+```env
+NEXT_PUBLIC_API_URL=http://127.0.0.1:8000/
+NEXT_PUBLIC_API_KEY=ledger_secure_key_2026
+```
+
+> ⚠️ **Important:** Make sure the `API_KEY` in the backend matches `NEXT_PUBLIC_API_KEY` in the frontend. Mismatched keys will result in `403 Forbidden` errors on all API requests.
+
+> 🔒 These `.env` files are listed in `.gitignore` to prevent sensitive configuration from being committed to the repository.
+
+---
+
+### 🐍 Backend Setup (FastAPI)
+
+Navigate to the backend folder:
+
+```bash
+cd backend
+```
+
+Create a virtual environment:
+
+```bash
+python -m venv .venv
+```
+
+Activate the environment:
+
+```bash
+# Windows
+.venv\Scripts\activate
+
+# Mac / Linux
+source .venv/bin/activate
+```
+
+Install dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+Run the API server:
+
+```bash
+uvicorn main:app --reload
+```
+
+Interactive documentation available at:
+
+```
+http://localhost:8000/docs
+```
+
+---
+
+### 🖥️ Frontend Setup (Next.js)
+
+Navigate to the frontend folder:
+
+```bash
+cd frontend
+```
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Run the development server:
+
+```bash
+npm run dev
+```
+
+Open the dashboard in your browser:
+
+```
+http://localhost:3000
+```
+
+---
+
+### 🔄 Full System Architecture
+
+When the project is running, the data flows through the following layers:
+
+```
+SQLite Database
+      │
+      ▼
+FastAPI Backend
+      │
+      ▼
+Next.js Dashboard
+      │
+      ▼
+Recharts Visualizations
+```
+
+---
+
+### 📊 Running the Full Pipeline
+
+Once everything is set up and running:
+
+1️⃣ Start the FastAPI backend (`uvicorn main:app --reload`)
+2️⃣ Start the Next.js frontend (`npm run dev`)
+3️⃣ Access the dashboard at `http://localhost:3000`
+
+You will be able to:
+
+- 📊 Explore financial KPIs
+- 📈 Analyze revenue and cost trends
+- 🎛️ Filter data by year and region
+- 🏷️ Compare product performance
+- 🎯 Track business goals progress
+
+---
+
+## �🛠️ Technologies Used
 
 ### Core Stack
 
@@ -243,13 +464,17 @@ financial-analytics-dashboard/
 | ![SQLite](https://img.shields.io/badge/-SQLite-003B57?style=flat-square&logo=sqlite&logoColor=white) | Relational database engine | 3.x |
 | ![Pandas](https://img.shields.io/badge/-Pandas-150458?style=flat-square&logo=pandas&logoColor=white) | Data transformation and aggregation | 2.x |
 
-### Planned Technologies
+### API & Frontend Stack
 
 | Technology | Role |
 |---|---|
 | ![FastAPI](https://img.shields.io/badge/-FastAPI-009688?style=flat-square&logo=fastapi&logoColor=white) | Backend REST API layer |
 | ![Next.js](https://img.shields.io/badge/-Next.js-000000?style=flat-square&logo=nextdotjs&logoColor=white) | Frontend dashboard framework |
 | ![Chart.js](https://img.shields.io/badge/-Recharts-FF6384?style=flat-square&logo=chartdotjs&logoColor=white) | Interactive data visualizations |
+
+### 🔐 API Security
+
+The FastAPI backend is protected by an **API Key authentication system**. All requests to the API must include a valid `X-API-Key` header. The key is configured via environment variables and validated on every request — unauthorized calls are rejected with a `403 Forbidden` response.
 
 ---
 
@@ -357,8 +582,8 @@ Planned features:
 | ✔️ Data processing pipeline | **Completed** |
 | ✔️ KPI calculation engine | **Completed** |
 | ✔️ Chart data generation | **Completed** |
-| ⬜ Backend API (FastAPI) | Planned |
-| ⬜ Interactive Frontend (Next.js) | Planned |
+| ✔️ Backend API (FastAPI) | **Completed** |
+| ✔️ Interactive Frontend (Next.js) | **Completed** |
 
 ---
 

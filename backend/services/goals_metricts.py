@@ -1,9 +1,12 @@
 from services.data.data_loader import fetch_sales_data,fetch_target_data
 
-def progress(current,target):
-    if target==0:
+def progress(current, target):
+    if target == 0:
         return 0
-    return round((current/target)*100,1)
+    
+    value = (current / target) * 100
+    
+    return round(min(value, 100), 1)
 
 def get_goals_progress(year:int,region:str=None):
     """
