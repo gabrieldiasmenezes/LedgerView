@@ -5,7 +5,7 @@
 
 <br/><br/>
 
-# 📊 Financial Analytics Dashboard
+# 📊 Ledger View
 
 ### _Enterprise-Grade Data Pipeline · Business Intelligence · KPI Engine_
 
@@ -30,7 +30,7 @@
 
 ## 🔍 Overview
 
-The **Financial Analytics Dashboard** is a data engineering and analytics project designed to replicate the internal data workflows found in real corporate environments.
+The **Ledger View** is a data engineering and analytics project designed to replicate the internal data workflows found in real corporate environments.
 
 It ingests simulated transactional sales data, applies a multi-layered transformation pipeline, calculates strategic business KPIs, and outputs structured datasets ready for consumption by dashboard frontends or REST APIs.
 
